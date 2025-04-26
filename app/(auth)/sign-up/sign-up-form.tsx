@@ -26,7 +26,7 @@ const SignUpForm = () => {
 
     return (
       <Button disabled={pending} className="w-full" variant="default">
-        {pending ? "Signing Up..." : "Sign Up"}
+        {pending ? "Submitting..." : "Sign Up"}
       </Button>
     );
   };
@@ -41,7 +41,6 @@ const SignUpForm = () => {
             id="name"
             name="name"
             type="text"
-            required
             autoComplete="name"
             defaultValue={signUpDefaultValues.name}
           />
@@ -51,8 +50,7 @@ const SignUpForm = () => {
           <Input
             id="email"
             name="email"
-            type="email"
-            required
+            type="text"
             autoComplete="email"
             defaultValue={signUpDefaultValues.email}
           />
