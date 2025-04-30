@@ -40,3 +40,14 @@ export function formatError(error: any) {
       : JSON.stringify(error.message);
   }
 }
+
+// Round number to 2 decimal places
+export function round2(value: number | string) {
+  const num = typeof value === "string" ? Number(value) : value;
+
+  if (typeof num === "number") {
+    return Math.round((num + Number.EPSILON) * 100) / 100;
+  }
+
+  throw new Error("Value is not a number or string.");
+}
