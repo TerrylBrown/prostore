@@ -121,27 +121,22 @@ export async function addItemToCart(data: CartItem) {
 }
 
 export async function getMyCart() {
-  const cookieStore = await cookies();
-  const sessionCartId = cookieStore.get("sessionCartId")?.value;
-
-  if (!sessionCartId) {
-    throw new Error("Cart session not found");
-  }
+  // Check for cart cookie
+  const sessionCartId = (await cookies()).get("sessionCartId")?.value;
+  if (!sessionCartId) throw new Error("Cart session not found");
 
   // Get session and user ID
   const session = await auth();
-  const userId = session?.user?.id;
+  const userId = session?.user?.id ? (session.user.id as string) : undefined;
 
-  // Get user cart from db
+  // Get user cart from database
   const cart = await prisma.cart.findFirst({
-    where: userId ? { userId } : { sessionCartId },
+    where: userId ? { userId: userId } : { sessionCartId: sessionCartId },
   });
 
-  if (!cart) {
-    return null;
-  }
+  if (!cart) return;
 
-  // Convert decimals and retun
+  // Convert decimals and return
   return convertToPlainObject({
     ...cart,
     items: cart.items as CartItem[],
